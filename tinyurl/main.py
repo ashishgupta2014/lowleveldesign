@@ -59,6 +59,7 @@ class MockDB:
         print(f"Persisted counter: {self.counter}")
 
     def store_mapping(self, short_code, long_url):
+
         self.url_map[short_code] = long_url
 
 
