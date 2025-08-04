@@ -29,6 +29,17 @@ class ParkingSpot:
             return True
         return False
 
+    def display(self):
+        print("--------------SPOT DISPLAY-------------------")
+        print(f"spotId:                  {self.get_spot_id()}")
+        print(f"FloorNumber:             {self.floor}")
+        print(f"RowNumber:               {self.row}")
+        print(f"ColumnNumber:            {self.column}")
+        print(f"VehicleType:             {self.vehicle_type}")
+        print(f"VehicleType:             {self.vehicle_type}")
+        print(f"canParkVehicle:          {self.can_park}")
+        print(f"parkedVehicleNumber:     {self.vehicle_number}")
+
 
 class Ticket:
 
@@ -83,6 +94,11 @@ class SearchManager:
         self.by_vehicle_number[ticket.get_vehicle_number()] = ticket
         self.by_spot[ticket.get_spot_id()] = ticket
 
+    def un_index(self, ticket):
+        self.by_ticket[ticket.get_ticket_id()] = None
+        self.by_vehicle_number[ticket.get_vehicle_number()] = None
+        self.by_spot[ticket.get_spot_id()] = None
+
 
 class ParkingLot:
 
@@ -96,8 +112,10 @@ class ParkingLot:
         for f, fl in enumerate(floor_list):
             for r, fr in enumerate(fl):
                 for c, fc in enumerate(fr):
+                    if fc == "4-0":
+                        print("ooo")
                     vehicle_type, can_park = fc.split('-')
-                    can_park = bool(can_park)
+                    can_park = bool(int(can_park))
                     parking_spot = ParkingSpot(f, r, c, vehicle_type, can_park)
                     self.parking_spots[parking_spot.get_spot_id()] = parking_spot
 
@@ -122,9 +140,14 @@ class ParkingLot:
             spot_id = ticket.get_spot_id()
             spot = self.parking_spots[spot_id]
             spot.remove_parking()
+            self.search_manager.un_index(ticket)
             return 201
         except KeyError:
             return 404
+
+    def display(self):
+        for _, spot in self.parking_spots.items():
+            spot.display()
 
 
 if __name__ == "__main__":
@@ -134,6 +157,7 @@ if __name__ == "__main__":
         ["4-0", "2-1", "4-0", "2-1"],
         ["4-1", "4-1", "4-1", "2-1"]]]
     parking_lot_1 = ParkingLot(parking_0)
+    print(parking_lot_1.display())
     parking_1 = [[
         ["2-1", "4-1", "2-1", "4-1"],
         ["2-1", "2-1", "4-1", "4-1"]
@@ -143,4 +167,4 @@ if __name__ == "__main__":
             ["4-1", "4-1", "2-1", "2-1"]
         ]]
     parking_lot_2 = ParkingLot(parking_1)
-    print(parking_lot_2.parking_spots)
+    print(parking_lot_2.display())
