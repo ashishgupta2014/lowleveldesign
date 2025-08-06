@@ -34,6 +34,7 @@ class ParkingSpot:
         print(f"spotId:                  {self.get_spot_id()}")
         print(f"FloorNumber:             {self.floor}")
         print(f"RowNumber:               {self.row}")
+
         print(f"ColumnNumber:            {self.column}")
         print(f"VehicleType:             {self.vehicle_type}")
         print(f"VehicleType:             {self.vehicle_type}")
